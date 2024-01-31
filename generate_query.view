@@ -1,10 +1,44 @@
-connection: "lookai"
-label: "LLM"
+view: generate_query {
 
-include: "generate_query.view.lkml"                # include all views in the views/ folder in this project
-# include: "/**/*.view.lkml"                 # include all views in this project
-# include: "my_dashboard.dashboard.lookml"   # include a LookML dashboard called my_dashboard
 
-explore: generate_query {
-  label: "EA - Generate Query"
+derived_table: {
+  sql:
+   SELECT JSON_EXTRACT_SCALAR(ml_generate_text_result, '$.predictions[0].content') AS generated_content
+    FROM
+  ML.GENERATE_TEXT(
+    MODEL `thelook_ecommerce.looker_query`,
+
+
+    (SELECT FORMAT('%s\ninput:%s\noutput:', context, {% parameter prompt %}) as prompt
+    FROM ${context.SQL_TABLE_NAME}),
+    STRUCT(
+      0.1 AS temperature,
+      1024 AS max_output_tokens,
+      0.95 AS top_p,
+      40 AS top_k))
+    ;;
+}
+
+dimension: generated_content {
+  type: string
+  sql: ${TABLE}.generated_content ;;
+}
+
+parameter: prompt {
+  type: string
+  default_value: "Sales this week"
+}
+}
+
+view: context {
+  derived_table: {
+    sql_create:
+    DECLARE context STRING;
+    SET context = """@{context}""";
+    CREATE OR REPLACE TABLE ${SQL_TABLE_NAME} AS
+    SELECT context;;
+    persist_for: "72 hours" # Can be trigger by API call
+  }
+
+  dimension: context {}
 }

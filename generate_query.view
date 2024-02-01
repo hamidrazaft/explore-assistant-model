@@ -6,7 +6,7 @@ derived_table: {
    SELECT JSON_EXTRACT_SCALAR(ml_generate_text_result, '$.predictions[0].content') AS generated_content
     FROM
   ML.GENERATE_TEXT(
-    MODEL `thelook_ecommerce.looker_query`,
+    MODEL `@{dataset_model}`,
 
 
     (SELECT FORMAT('%s\ninput:%s\noutput:', context, {% parameter prompt %}) as prompt

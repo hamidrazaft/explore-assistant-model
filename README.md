@@ -1,4 +1,4 @@
-# README for LookML Project: Integrating ML.GENERATE_TEXT() Function from BigQuery
+# Explore Assistant Model : A LookML Project for Integrating ML.GENERATE_TEXT() Function from BigQuery for Query Generation
 
 ## Part 1: Creating a BigQuery ML Remote Model
 
@@ -16,10 +16,12 @@ Once your BigQuery ML remote model is set up, the next step is to integrate it i
 
 In this section, we will detail the parameters you need to define in order to effectively utilize the ML.GENERATE_TEXT() function within your LookML project.
 
-- **Parameter Configuration**: [Details to be provided here.]
+- **Parameter Configuration**: Head to manifest.lkml and modify the following constant *dataset_model* by the name of dataset and the BigQuery model created in Part 1
 
 ## Part 4: Generating and Customizing Context for the LLM
 
 To fully harness the capabilities of the LLM within your LookML projects, it's important to understand how to generate and customize context. For comprehensive instructions and tips on how to do this, please visit the following GitHub repository:
 
 - **Repository Link**: [Looker Explore Assistant](https://github.com/Kriz182/looker-explore-assistant). This repository provides valuable resources and guidelines on how to tailor the context for the LLM to your specific needs and use cases.
+
+- **Parameter Configuration**: Head back to your manifest.lkml and copy the context and examples into your *context* constant. 
